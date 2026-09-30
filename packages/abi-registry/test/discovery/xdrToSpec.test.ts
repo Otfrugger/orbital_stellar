@@ -3,7 +3,6 @@ import { xdr } from "@stellar/stellar-sdk";
 import {
   mapTypeDef,
   mapUdtUnionV0,
-  UnsupportedSpecTypeError,
 } from "../../src/discovery/xdrToSpec.js";
 
 describe("mapTypeDef - composite and edge-case types not covered by the real WASM fixtures", () => {
@@ -39,8 +38,13 @@ describe("mapTypeDef - composite and edge-case types not covered by the real WAS
     expect(mapTypeDef(xdr.ScSpecTypeDef.scSpecTypeError())).toBe("error");
   });
 
-  it("throws UnsupportedSpecTypeError for the generic Val type", () => {
-    expect(() => mapTypeDef(xdr.ScSpecTypeDef.scSpecTypeVal())).toThrow(UnsupportedSpecTypeError);
+  it("maps the generic Val slot to the val primitive", () => {
+    expect(mapTypeDef(xdr.ScSpecTypeDef.scSpecTypeVal())).toBe("val");
+  });
+
+  it("maps the empty tuple (Rust unit) to void", () => {
+    const type = xdr.ScSpecTypeDef.scSpecTypeTuple(new xdr.ScSpecTypeTuple({ valueTypes: [] }));
+    expect(mapTypeDef(type)).toBe("void");
   });
 
   it("recurses through nested composites: Option<Vec<Address>>", () => {
