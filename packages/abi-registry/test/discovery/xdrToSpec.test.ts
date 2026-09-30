@@ -1,9 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { xdr } from "@stellar/stellar-sdk";
-import {
-  mapTypeDef,
-  mapUdtUnionV0,
-} from "../../src/discovery/xdrToSpec.js";
+import { mapTypeDef, mapUdtUnionV0 } from "../../src/discovery/xdrToSpec.js";
 
 describe("mapTypeDef - composite and edge-case types not covered by the real WASM fixtures", () => {
   it("maps map<K,V>", () => {

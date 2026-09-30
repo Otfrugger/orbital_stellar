@@ -93,7 +93,7 @@ export function mapTypeDef(type: xdr.ScSpecTypeDef): TypeSpec {
     case "scSpecTypeTuple": {
       const elements = type.tuple().valueTypes().map(mapTypeDef);
       // The unit type `()` encodes as an empty tuple on the wire (e.g. the
-      // `Ok` arm of `Result<(), StrategyError>`); it is void semantically.
+      // `Ok` arm of `Result<(), ...>`); it is void semantically.
       if (elements.length === 0) return "void";
       return { type: "tuple", elements };
     }
